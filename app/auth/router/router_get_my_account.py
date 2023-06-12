@@ -14,6 +14,9 @@ from .dependencies import parse_jwt_user_data
 class GetMyAccountResponse(AppModel):
     id: Any = Field(alias="_id")
     email: str
+    name: str
+    phone: str
+    city: str
 
 
 @router.get("/users/me", response_model=GetMyAccountResponse)

@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
   # app:
   #   build:
@@ -21,6 +20,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGOPASSWORD:-password}
     ports:
       - "27017:27017"
+    env_file: .env
     volumes:
       - mongodb_data_container:/data/db
 

@@ -37,28 +37,3 @@ class S3Service:
                 print(file)
         else:
             print("No files matching the substring were found.")
-
-
-# {
-#     "ResponseMetadata": {
-#         "RequestId": "151PH8M3MQ56H6WX",
-#         "HostId": "lDHdp2446g0G9hLBp0hj9L48iBfZgSKMsAnEhl4XuMzXSs6iXl4vUgBFMJXiHYttg/gI303Gknbmz+275TFztg==",
-#         "HTTPStatusCode": 200,
-#         "HTTPHeaders": {
-#             "x-amz-id-2": "lDHdp2446g0G9hLBp0hj9L48iBfZgSKMsAnEhl4XuMzXSs6iXl4vUgBFMJXiHYttg/gI303Gknbmz+275TFztg==",
-#             "x-amz-request-id": "151PH8M3MQ56H6WX",
-#             "date": "Wed, 14 Jun 2023 14:06:36 GMT",
-#             "x-amz-bucket-region": "eu-central-1",
-#             "content-type": "application/xml",
-#             "transfer-encoding": "chunked",
-#             "server": "AmazonS3",
-#         },
-#         "RetryAttempts": 1,
-#     },
-#     "IsTruncated": False,
-#     "Name": "makym8545-bucket",
-#     "Prefix": "6489c6f6f2b09c2d50aed7fb",
-#     "MaxKeys": 1000,
-#     "EncodingType": "url",
-#     "KeyCount": 0,
-# }

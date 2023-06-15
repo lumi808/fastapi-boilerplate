@@ -29,6 +29,7 @@ def create_post(
     jwt: JWTData = Depends(parse_jwt_user_data),
 ) -> dict[str, str]:
     post_id = jwt.user_id
+    coordinates = svc.here_service.get_coordinates(input.address)
     input = {
         "post_id": post_id,
         "type": input.type,
@@ -37,6 +38,7 @@ def create_post(
         "area": input.area,
         "rooms_count": input.rooms_count,
         "description": input.description,
+        "coordinates": coordinates,
     }
     svc.repository.create_post(input)
 

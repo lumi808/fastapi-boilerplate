@@ -5,12 +5,11 @@ from app.auth.router.dependencies import parse_jwt_user_data
 from . import router
 
 
-@router.delete("/users/favorites/shanyraks/{post_id}}")
-def delete_favourite(
-    post_id: str,
+@router.delete("/users/avatar")
+def delete_avatar(
     svc: Service = Depends(get_service),
     jwt: JWTData = Depends(parse_jwt_user_data),
 ) -> str:
-    svc.repository.delete_favourite(jwt.user_id, post_id)
-
+    svc.s3_service.delete_files("makym8545-bucket", jwt.user_id)
+    svc.repository.add_avatar_url(jwt.user_id, "")
     return Response(status_code=202)

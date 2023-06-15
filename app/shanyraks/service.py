@@ -1,16 +1,24 @@
+from pydantic import BaseSettings
+
 from app.config import database
+
+from .adapters.here_service import HereService
+from .adapters.s3_service import S3Service
 from .repository.repository import ShanyraksRepository
-from app.shanyraks.adapters.s3_service import S3Service
+
+
+class Config(BaseSettings):
+    HERE_API_KEY: str
 
 
 class Service:
-    def __init__(self, repository: ShanyraksRepository, s3_service: S3Service):
-        self.repository = repository
-        self.s3_service = s3_service
+    def __init__(self):
+        config = Config()
+        self.repository = ShanyraksRepository(database)
+        self.s3_service = S3Service()
+        self.here_service = HereService(config.HERE_API_KEY)
 
 
 def get_service():
-    repository = ShanyraksRepository(database)
-    s3_service = S3Service()
-    svc = Service(repository, s3_service)
+    svc = Service()
     return svc

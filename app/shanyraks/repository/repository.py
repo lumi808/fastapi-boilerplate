@@ -17,11 +17,12 @@ class ShanyraksRepository:
             "rooms_count": post["rooms_count"],
             "description": post["description"],
             "media": [],
+            "coordinates": post["coordinates"],
         }
 
         self.database["posts"].insert_one(payload)
 
-    def get_post_by_id(self, id: str) -> dict:
+    def get_post_by_id(self, id: str) -> dict[str, str]:
         post = self.database["posts"].find_one({"_id": ObjectId(id)})
 
         return post

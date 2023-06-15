@@ -20,6 +20,7 @@ class AuthRepository:
             "phone": user["phone"],
             "created_at": datetime.utcnow(),
             "favourites": [],
+            "avatar": "",
         }
 
         self.database["users"].insert_one(payload)
@@ -86,4 +87,9 @@ class AuthRepository:
         favorites.pop(index)
         self.database["users"].update_one(
             {"_id": ObjectId(user_id)}, {"$set": {"favourites": favorites}}
+        )
+
+    def add_avatar_url(self, user_id: str, url: str):
+        self.database["users"].update_one(
+            {"_id": ObjectId(user_id)}, {"$set": {"avatar": url}}
         )

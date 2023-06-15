@@ -71,17 +71,12 @@ class ShanyraksRepository:
         self.database["comments"].insert_one(payload)
 
     def get_comments(self, id: str):
-        cursor = self.database["comments"].find({"post_id": id})
+        cursor = self.database["comments"].find({"post_id": ObjectId(id)})
+        cursor_list = list(cursor)
         comments = []
+        for item in cursor_list:
+            comments.append(item["content"])
 
-        for comment in cursor:
-            comment_dict = {
-                "_id": str(comment["_id"]),
-                "post_id": str(comment["post_id"]),
-                "content": comment["content"],
-                # Include other fields as needed
-            }
-            comments.append(comment_dict)
         return comments
 
     def delete_comment(self, comment_id: str):

@@ -19,6 +19,7 @@ class AuthRepository:
             "city": user["city"],
             "phone": user["phone"],
             "created_at": datetime.utcnow(),
+            "favourites": [],
         }
 
         self.database["users"].insert_one(payload)
@@ -49,4 +50,40 @@ class AuthRepository:
                     "city": city,
                 }
             },
+        )
+
+    def get_favourites(self, user_id: str):
+        user = self.database["users"].find_one(
+            {
+                "_id": ObjectId(user_id),
+            }
+        )
+
+        favourites = user["favourites"]
+        return favourites
+
+    def add_favourties(self, user_id: str, post_id: str):
+        favorites = self.get_favourites(user_id)
+        favorites.append(post_id)
+
+        self.database["users"].update_one(
+            {"_id": ObjectId(user_id)}, {"$set": {"favourites": favorites}}
+        )
+
+    def get_user_favourites_by_id(self, user_id: str):
+        user = self.database["users"].find_one(
+            {
+                "_id": ObjectId(user_id),
+            }
+        )
+        # add addres for every post
+        favourites = user["favourites"]
+        return favourites
+
+    def delete_favourite(self, user_id: str, post_id: str):
+        favorites = self.get_favourites(user_id)
+        index = favorites.index(post_id)
+        favorites.pop(index)
+        self.database["users"].update_one(
+            {"_id": ObjectId(user_id)}, {"$set": {"favourites": favorites}}
         )

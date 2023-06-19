@@ -1,6 +1,6 @@
 from bson.objectid import ObjectId
 from pymongo.database import Database
-from typing import List
+from typing import List, Optional
 
 
 class ShanyraksRepository:
@@ -92,3 +92,49 @@ class ShanyraksRepository:
                 },
             },
         )
+
+    def get_posts(
+        self,
+        limit: int,
+        offset: int,
+        rooms_count: Optional[int] = None,
+        type: Optional[str] = None,
+        price_from: Optional[float] = None,
+        price_until: Optional[str] = None,
+        latitude: Optional[float] = None,
+        longitude: Optional[float] = None,
+        radius: Optional[float] = None,
+    ):
+        query = {}
+
+        if rooms_count is not None:
+            query["rooms_count"] = {}
+            query["rooms_count"]["$gt"] = rooms_count
+
+        if type is not None:
+            query["type"] = type
+
+        if price_from is not None or price_until is not None:
+            query["price"] = {}
+            if price_from is not None:
+                query["price"]["$gt"] = price_from
+            if price_until is not None:
+                query["price"]["$lt"] = price_until
+
+        if latitude is not None and longitude is not None and radius is not None:
+            new_radius = radius * 3.2535313808
+            query["coordinates"] = {
+                "$geoWithin": {"$centerSphere": [[longitude, latitude], new_radius]}
+            }
+
+        total_count = self.database["posts"].count_documents(query)
+
+        cursor = (
+            self.database["posts"].find(query).limit(limit).skip(offset).sort("address")
+        )
+
+        result = []
+        for item in cursor:
+            result.append(item)
+
+        return {"total": total_count, "objects": result}

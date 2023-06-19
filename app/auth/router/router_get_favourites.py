@@ -21,5 +21,6 @@ def get_favourites(
     favourites = list(svc.repository.get_user_favourites_by_id(jwt_data.user_id))
     for fav in favourites:
         post = shan_svc.repository.get_post_by_id(fav)
-        res.append(post)
+        data = fav | post
+        res.append(data)
     return res
